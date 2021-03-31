@@ -4,6 +4,7 @@
 <br>
 Just give me an F on this and ill work on it another day and resend it in. Im so far behind in class and have no idea what is going on and we have more homework that I have no clue how to do or whats going on. So just give me an F on this and ill try to get it done and resend it in but right now I feel like I am being set up for failure with everything.
 <br>
+Ill be working on it as much as I can and hope to have it done here soon or this weekend. 
 <br>
 <br>
 # Unit 12 MySQL Homework: Employee Tracker
