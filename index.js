@@ -1,5 +1,6 @@
 const connection = require("./db");
 const inquirer = require("inquirer");
+const Choice = require("inquirer/lib/objects/choice");
 
 
 init()
@@ -61,4 +62,140 @@ function addDepartment() {
         type: "input",
         message: "What department do you want to add?"
     })
+    .then((data) => {
+        connection.query('INSERT INTO department SET ?', data)
+        init()
+    });
+}
+function addRole() {
+    connection.query('SELECT * FROM department').then((data) => {
+        const deptChoice = [];
+        data.forEach(choice => deptChoice.push(choice.dep_name))
+        inquirer.prompt([
+            {
+                name: "role_name",
+                type: "input",
+                message: "What is the role you would like to add?"
+            },
+            {
+                name: "salary",
+                type: "input",
+                message: "What is the salary for this role?"
+            },
+            {
+                name: "deptName",
+                type: "list",
+                message: "What department would you like to add this role to?",
+                choices: deptChoices
+            }
+        ])
+            .then((answers) => {
+                let dept_id = "";
+                for (i = 0; i < data.length; i++) {
+                    if (answers.deptName === data[i].dept_name) {
+                       dept_id = data[i].id
+                    }
+            }
+            connection.query('INSERT INTO employeerole SET ?',
+                {
+                    role_name: answers.role_name,
+                    salary: answers.salary,
+                    department_id: dept_id
+                })
+
+            init()            
+        })
+    })        
+}
+function addEmployee() {
+    connection.query('SELECT * FROM employeerole').then((data) => {
+        const roleChoice = [];
+        data.forEach(choice => roleChoice.push(choice.role_name))
+        inquirer.prompt([
+            {
+                name: "first_name",
+                type: "input",
+                message: "First name of employee you want to add?"
+            },
+            {
+                name: "last_name",
+                type: "input",
+                message: "Last name of employee you want to add?"
+            },
+            {
+                name: "roleName",
+                type: "list",
+                message: "What role would you like to add this employee to?",
+                choices: roleChoices
+            },
+            {
+                name: "manager_id",
+                type: "list",
+                message: "What is the manager ID?",
+                
+            }
+        ])
+            .then((answers) => {
+                let role_id = "";
+                for (i = 0; i < data.length; i++) {
+                    if (answers.roleName === data[i].role_name) {
+                       role_id = data[i].id
+                    }
+            }
+            let manager_id = "";
+            if (answers.manager_id === "") {
+                manager_id = 0 
+            }else {
+                manager_id = answers.manager_id
+            }
+            connection.query('INSERT INTO employee SET ?',
+                {
+                    first_name: answers.first_name,
+                    last_name: answers.last_name,
+                    role_id: role_id,
+                    manager_id: manager_id
+                },
+            )    
+
+            init()            
+        })
+    })        
+}
+function updateEmployee() {
+    connection.query("SELECT * FROM employeerole").then((data) => {
+        const roleChoices = [];
+        data.forEach(choice => roleChoices.push(choice.role_name))
+        inquirer.prompt([
+            {
+                name: "first_name",
+                type: "input",
+                message: "What is the first name of the employee being updated?"
+            },
+            {
+                name: "roleName",
+                type: "list",
+                message: "What role would you like to put this employee to?",
+                choices: roleChoices
+            }
+        ])
+            .then((answers) => {
+                let role_id = "";
+                for (i = 0; i < data.length; i++) {
+                    if (answers.roleName === data[i].role_name) {
+                        role_id = data[i].id
+                    }
+                }
+                connection.query('UPDATE employee SET ? WHERE ?',
+                    [{
+                        role_id: role_id,
+                    },
+                    {
+                        first_name: answers.first_name
+                    }],
+                )
+
+                init()
+            })
+    })
+
 }
