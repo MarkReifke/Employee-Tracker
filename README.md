@@ -2,6 +2,7 @@
 <br>
 <br>
 <br>
+I dont know whats going on but when ever i try to upload my video to youtube i keep getting errors and it saying it cant uplaod so here is all my coding and im trying to figure out whats going on with the video  this isnt the first time this has happened to me. 
 <br>
 <br>
 # Unit 12 MySQL Homework: Employee Tracker
